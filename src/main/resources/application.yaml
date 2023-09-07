@@ -1,0 +1,18 @@
+server:
+  port: 8084
+
+spring:
+  r2dbc:
+    url: r2dbc:pool:postgres://localhost:5432/jwt_postgres
+    username: postgres
+    password: 45stsat5
+  flyway:
+    url: jdbc:postgresql://localhost:5432/jwt_postgres
+    locations: classpath:db/migration
+    user: postgres
+    password: 45stsat5
+jwt:
+  secret: 88EF24E1698AAB6100BA39CAD9EA3EBB31407F723F5DDAF1702BBB981A53059E
+  expiration: 3600
+  issuer: sumkin
+
