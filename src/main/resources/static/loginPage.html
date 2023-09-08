@@ -2,10 +2,62 @@
 <html>
 <head>
     <title>Login</title>
+    <script>
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            var data = {
+                email: username,
+                password: password
+            };
+
+            fetch('http://localhost:8084/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var token = data.token;
+                    // Store the token in the Sessionstorage
+                    sessionStorage.setItem('token', token);
+                    // Redirect to another page or perform any other logic
+                    sendAuthenticatedRequest('http://localhost:8084/api/v1/auth/info')
+                    //window.location.href = '/home';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle error case
+                });
+        }
+
+        function sendAuthenticatedRequest(url) {
+            var token = sessionStorage.getItem('token');
+
+            fetch(url, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Process the response data
+                    //console.log(data);
+                    document.getElementById("response").innerText = JSON.stringify(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle error case
+                });
+        }
+    </script>
 </head>
 <body>
 <h2>Login</h2>
-<form method="post" action="/login">
+<form onsubmit="event.preventDefault(); login()">
     <div>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
@@ -17,6 +69,7 @@
     <div>
         <button type="submit">Login</button>
     </div>
+    <div id="response"></div>
 </form>
 </body>
 </html>
