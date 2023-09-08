@@ -28,7 +28,7 @@ public class WebSecurityConfig {
     @Value("${jwt.secret}")
     private String secret;
 
-    private final String [] publicRoutes = {"/api/v1/auth/register", "/api/v1/auth/login"};
+    private final String [] publicRoutes = {"/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/extralogin"};
 
     @Bean
     @SuppressWarnings({"deprecated", "removal"})
