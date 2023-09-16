@@ -2,7 +2,6 @@ package com.sumkin.jwt_postgres_webflux_flyway_base.rest;
 
 import com.sumkin.jwt_postgres_webflux_flyway_base.entity.AuthResponse;
 import com.sumkin.jwt_postgres_webflux_flyway_base.entity.UserEntity;
-import com.sumkin.jwt_postgres_webflux_flyway_base.entity.UserRole;
 import com.sumkin.jwt_postgres_webflux_flyway_base.repository.UserRepository;
 import com.sumkin.jwt_postgres_webflux_flyway_base.security.CustomPrincipal;
 import com.sumkin.jwt_postgres_webflux_flyway_base.security.SecurityService;
@@ -10,47 +9,42 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class AuthRestcontrollerV1 {
-
     private final SecurityService securityService;
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private ApplicationContext context;
 
-
     @PostMapping("/register")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<UserEntity> register(@RequestBody UserEntity user) {
-        return userRepository.save(
-                user.toBuilder()
+        return userRepository.save(UserEntity.
+                        builder()
+                        .email(user.getEmail())
                         .password(passwordEncoder.encode(user.getPassword()))
-                        .role(UserRole.USER)
+                        .role(user.getRole())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
                         .enabled(true)
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
-                        .build()
-        ).doOnSuccess(u -> log.info("User {} created", u.getEmail()));
+                        .build())
+                .doOnSuccess(u -> log.info("User {} created", u.getEmail()));
     }
 
 
@@ -76,7 +70,7 @@ public class AuthRestcontrollerV1 {
     @GetMapping("/allusers")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<Map<String, Object>> getAllUsers(@RequestParam(defaultValue = "0") Long offset,
-                                        @RequestParam(defaultValue = "3") Long limit) {
+                                                 @RequestParam(defaultValue = "3") Long limit) {
         Mono<Long> total = userRepository.count();
         Flux<UserEntity> users = userRepository.findAll().skip(offset).take(limit);
 
@@ -100,15 +94,6 @@ public class AuthRestcontrollerV1 {
                     return result;
                 });
     }
-
-    @GetMapping("/extralogin")
-    public ResponseEntity<Resource> showLoginPage() throws IOException {
-        Resource resource = new ClassPathResource("static/loginPage.html");
-        return ResponseEntity.ok()
-                .contentType(MediaType.TEXT_HTML)
-                .body(resource);
-    }
-
 
     @GetMapping("/shutdown")
     public void shutdownApp() {

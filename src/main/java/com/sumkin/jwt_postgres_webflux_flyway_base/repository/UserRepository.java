@@ -18,4 +18,5 @@ public interface UserRepository extends R2dbcRepository<UserEntity, Long> {
             "WHERE users.id = :userId;")
     Flux<String> findMyHobbies(Long userId);
 
+
 }

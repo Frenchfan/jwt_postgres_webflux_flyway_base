@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    <h2>Login</h2>
+    <form onsubmit="event.preventDefault(); login()">
+      <div>
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value="player@yandex.ru"
+          required
+        />
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value="player"
+          required
+        />
+      </div>
+      <div><button type="submit">Login</button></div>
+      <p>this is the full response:</p>
+      <label for="user_id">User id:</label>
+      <textarea name="user id" id="user_id" cols="10" rows="1"></textarea>
+      <br />
+      <label for="token">Token:</label>
+      <textarea name="token" id="token" cols="80" rows="4"></textarea>
+      <br />
+      <label for="issued_at">Issued at:</label>
+      <textarea name="issued_at" id="issued_at" cols="30" rows="1"></textarea>
+      <br />
+      <label for="expires_at">Expires at:</label>
+      <textarea name="expires_at" id="expires_at" cols="30" rows="1">
+      </textarea>
+      <p>Here is the full info on user (received with token):</p>
+      <label for="full_info">Full user info (with token):</label>
+      <textarea name="full_info" id="full_info" cols="60" rows="4"> </textarea>
+      <p>User's hobby (received with token, @Query(SELECT name FROM hobbies JOIN user_hobbies on hobbies.id = user_hobbies.hobby_id JOIN users on user_hobbies.user_id = users.id WHERE users.id = :userId")):</p>
+      <label for="hobby">Hobbies (with token):</label>
+      <textarea name="hobby" id="hobby" cols="60" rows="4"> </textarea>
+      <p>Here is info on all users (received with token) - only for ADMIN!</p>
+      <label for="all_users">All users (with token):</label>
+      <textarea name="all_users" id="all_users" cols="60" rows="5"> </textarea>
+    </form>
+    <form onsubmit="event.preventDefault(); register()">
+        <p>Register form</p>
+        <div>
+          <label for="email_reg">Email:</label>
+          <input
+            type="email_reg"
+            id="email_reg"
+            name="email_reg" required
+          />
+        </div>
+        <div>
+          <label for="password_reg">Password:</label>
+          <input
+            type="password_reg"
+            id="password_reg"
+            name="password_reg"
+            required
+          />
+        </div>
+        <div>
+            <label for="role_reg">Role:</label>
+            <select id="role_reg" name="role_reg" required>
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER">USER</option>
+                <option value="COACH">COACH</option>
+                <option value="PARENT">PARENT</option>
+                <option value="PLAYER">PLAYER</option>
+                <option value="DOCTOR">PLAYER</option>
+            </select>
+        </div>
+        <div>
+          <label for="first_name_reg">First Name:</label>
+          <input
+            type="first_name_reg"
+            id="first_name_reg"
+            name="first_name_reg"
+            required
+          />
+        </div>
+        <div>
+          <label for="last_name_reg">Last Name:</label>
+          <input
+            type="last_name_reg"
+            id="last_name_reg"
+            name="last_name_reg"
+            required
+          />
+        </div>
+        <div><button type="submit">Register</button></div>
+    </form>
+    <script src="/script.js"></script>
+  </body>
+</html>
