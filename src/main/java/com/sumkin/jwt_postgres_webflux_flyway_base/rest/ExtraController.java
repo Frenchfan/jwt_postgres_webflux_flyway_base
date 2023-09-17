@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @Controller
-//@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 // It is important to annotate the controller with @Controller as it is the only way to use templates
 @RequestMapping("/api/loginextra")
 public class ExtraController {

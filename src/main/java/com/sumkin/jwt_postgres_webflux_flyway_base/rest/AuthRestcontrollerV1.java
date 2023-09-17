@@ -22,7 +22,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class AuthRestcontrollerV1 {
     private final SecurityService securityService;
