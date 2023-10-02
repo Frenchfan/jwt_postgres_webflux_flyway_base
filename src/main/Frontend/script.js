@@ -7,7 +7,7 @@ function login() {
     email: email,
     password: password,
   };
-  fetch(server + "8084/sboot/login", {
+  fetch(server + "8084/api/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -29,7 +29,7 @@ function login() {
     });
 }
 function authFetch(token, server, endpoint, divToFill) {
-    fetch(server + "8084/sboot/" + endpoint, {
+    fetch(server + "8084/api/" + endpoint, {
         method: "GET",
         headers: { 
             "Content-Type": "application/json",
@@ -63,7 +63,7 @@ function register() {
     last_name: last_name
   };
   console.log(data);
-  fetch(server + "8084/sboot/register", {
+  fetch(server + "8084/api/register", {
     method: "POST",
     headers: {
         "Content-Type": "application/json", 

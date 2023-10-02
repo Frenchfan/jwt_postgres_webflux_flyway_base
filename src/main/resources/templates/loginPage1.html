@@ -110,8 +110,21 @@ admin@yandex with password admin for the role ADMIN</p>
         <button type="submit">Register</button>
     </div>
 </form>
+<button onclick="shutdown()">Shutdown the server app</button>
 <script>
+
     const server = "http://95.140.156.17:8084/";
+
+    function shutdown() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const data = {
+            email: email,
+            password: password,
+        };
+        document.getElementById("token").innerText = data.token;
+        authFetch(data.token, server, "shutdown", "");
+    }
 
     function login() {
 
@@ -190,9 +203,7 @@ admin@yandex with password admin for the role ADMIN</p>
             .catch((error) => {
                 console.error("Error:", error);
             });
-
     }
-
 </script>
 </body>
 </html>
